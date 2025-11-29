@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TinyMCE CDN Minimal Set</title>
+  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+  <script src="./plugins/bitabletools/plugin.js"></script>
+  <style>
+    html, body { height: 100%; }
+    body { margin: 0; display: flex; flex-direction: column; }
+    .tox.tox-tinymce { flex: 1; }
+  </style>
+  <script type="module">
+    if (!('bitable' in window)) {
+      try {
+        const { bitable, FieldType } = await import('https://cdn.jsdelivr.net/npm/@lark-base-open/js-sdk@0.5.0/+esm');
+        window.bitable = bitable;
+        window.FieldType = FieldType;
+      } catch (e) {
+        console.warn('Base SDK load failed', e);
+      }
+    }
+  </script>
+</head>
+<body>
+  <h3 style="margin:12px 0;">文档打印助手</h3>
+  <textarea id="editor" style="width:100%;height:100%"></textarea>
+  <script>
+    tinymce.init({
+      selector: '#editor',
+      plugins: 'table bitabletools',
+      menubar: 'file edit format',
+      toolbar: 'templates fieldSelect recordPicker insertDataTable table | fontfamily fontsize lineheight | forecolor backcolor | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | removeformat | print code',
+      font_size_formats: '8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt'
+    });
+  </script>
+</body>
+</html>
